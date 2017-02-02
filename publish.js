@@ -317,9 +317,9 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                     displayName = item.name;
                 }
 
-                itemsNav += '<li>' + linktoFn(item.longname, displayName.replace(/^module:/g, ''));
+                itemsNav += '<li>' + linktoFn(item.longname, displayName.replace(/^module:/g, '')) + (methods.length > 0 ? '<button class="toggleBtn" onclick=\' this.parentNode.querySelector(".methods").classList.toggle("hidden")\'>m</button>' : '');
                 if (methods.length) {
-                    itemsNav += "<ul class='methods'>";
+                    itemsNav += "<ul class='methods hidden'>";
 
                     methods.forEach(function (method) {
                         itemsNav += "<li data-type='method'>";
@@ -350,6 +350,24 @@ function linktoExternal(longName, name) {
     return linkto(longName, name.replace(/(^"|"$)/g, ''));
 }
 
+function buildSearch () {
+	return "<input type='text' onkeyup='search(this.value)'></input>" + 
+	`<script>function search (str) {
+		console.debug(str);
+		var lis = document.body.querySelectorAll('nav li');
+		var reg = new RegExp(str, 'i');
+		for (var i in lis) {
+			if (lis.hasOwnProperty(i)) {
+				try {
+					lis[i].style.display = reg.test(lis[i].textContent) ? '' : 'none';
+				} catch (e) {
+					console.debug(lis[i], e);
+				}
+			}
+		}
+	}</script>`;
+}
+
 /**
  * Create the navigation sidebar.
  * @param {object} members The members that will be used to create the sidebar.
@@ -368,6 +386,8 @@ function buildNav(members) {
     var nav = '<h2><a href="index.html">Home</a></h2>';
     var seen = {};
     var seenTutorials = {};
+	
+	nav += buildSearch();
 
     nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
     nav += buildMemberNav(members.modules, 'Modules', {}, linkto);

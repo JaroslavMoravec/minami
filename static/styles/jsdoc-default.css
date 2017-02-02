@@ -603,3 +603,17 @@ dl.param-type {
     width: 100%;
   }
 }
+/* JaroslavMoravec changes */
+.hidden {
+	display: none; 
+}
+nav .toggleBtn {
+	border: 1px solid grey;
+	border-radius: 2px;
+	color: grey;
+	padding: 1px;
+	margin: 0 .5em;
+	line-height: 10px;
+	background-color: #FFF;
+}
+nav>ul>li>a, nav>ul>li>a:active {display: inline-block;}
